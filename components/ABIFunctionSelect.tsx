@@ -31,7 +31,7 @@ const ABIFunctionSelect = ({ ABI, setFunction }: ABIFunctionSelectProps) => {
 
   const theme = (theme: Theme) => ({
     ...theme,
-    borderRadius: "10px",
+    borderRadius: 10,
     colors: {
       ...theme.colors,
       neutral0: "#430086",
