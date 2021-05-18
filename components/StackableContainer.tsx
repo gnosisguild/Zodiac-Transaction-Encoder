@@ -30,8 +30,10 @@ export default (props: Props) => (
       }
 
       .base {
-        max-width: 750px;
-        background: #62145f;
+        min-width: 400px;
+        width: 40vw;
+        max-width: 650px;
+        background: #430086;
         box-shadow: 0px 28px 80px rgba(0, 0, 0, 0.07),
           0px 12.7134px 39.2617px rgba(0, 0, 0, 0.0519173),
           0px 7.26461px 23.349px rgba(0, 0, 0, 0.0438747),

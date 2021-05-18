@@ -6,6 +6,7 @@ import ABIFunctionRenderer from "../components/ABIFunctionRenderer";
 import ABIFunctionSelect from "../components/ABIFunctionSelect";
 import ABIInput from "../components/ABIInput";
 import Layout from "../components/Layout";
+import StackableContainer from "../components/StackableContainer";
 
 const IndexPage = () => {
   const [parsedABI, setParsedABI] =
@@ -16,7 +17,9 @@ const IndexPage = () => {
 
   return (
     <Layout title="ABI Explorer">
-      <h1>Explore an ABI</h1>
+      <StackableContainer>
+        <h1>ABI Function Encoder</h1>
+      </StackableContainer>
       <ABIInput setABI={setParsedABI} />
       {parsedABI && (
         <ABIFunctionSelect ABI={parsedABI} setFunction={selectABIFunction} />
@@ -29,7 +32,6 @@ const IndexPage = () => {
       )}
       <style jsx>{`
         h1 {
-          color: red;
         }
       `}</style>
     </Layout>

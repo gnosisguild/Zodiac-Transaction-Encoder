@@ -2,6 +2,8 @@ import * as React from "react";
 import { ethers } from "ethers";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
+import StackableContainer from "./StackableContainer";
+
 type ABIFunctionRendererProps = {
   ABI: ethers.utils.Interface;
   ABIFunction: ethers.utils.FunctionFragment;
@@ -61,37 +63,70 @@ const ABIFunctionRenderer = ({
   };
 
   return (
-    <div>
-      <ul>
-        {inputVals.map((input, i) => (
-          <li key={makeId(input, i)}>
-            <label htmlFor={makeId(input, i)}>{input.name || "Input"}</label>
-            <input
-              type="text"
-              value={input.value}
-              onChange={handleChange}
-              name={input.name}
-              id={makeId(input, i)}
-              data-input-type={input.type}
-            />
-          </li>
-        ))}
-      </ul>
-      <div>
-        <h2>Call Data:</h2>
-        <div className="callData">{callData}</div>
+    <StackableContainer lessMargin>
+      {inputVals.length > 0 && (
+        <ul>
+          {inputVals.map((input, i) => (
+            <li key={makeId(input, i)}>
+              <StackableContainer lessMargin lessPadding lessRadius>
+                <label htmlFor={makeId(input, i)}>
+                  {input.name || "Input"} ({input.type})
+                </label>
+                <input
+                  type="text"
+                  value={input.value}
+                  onChange={handleChange}
+                  name={input.name}
+                  id={makeId(input, i)}
+                  data-input-type={input.type}
+                />
+              </StackableContainer>
+            </li>
+          ))}
+        </ul>
+      )}
+      <StackableContainer lessMargin lessPadding lessRadius>
+        <label>Call Data</label>
+        <textarea className="callData" disabled value={callData} />
         <CopyToClipboard text={callData}>
-          <button>Copy</button>
+          <button className="copy-button">Copy to clipboard</button>
         </CopyToClipboard>
-      </div>
+      </StackableContainer>
       <style jsx>{`
         .callData {
           padding: 1em;
-          font-family: monospace;
-          background: ghostwhite;
+        }
+        .callData:focus,
+        .callData:hover,
+        .callData:active {
+          border: 1px solid #7240a4;
+        }
+        ul {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+        li {
+          margin-top: 20px;
+        }
+        li:first-child {
+          margin-top: 0;
+        }
+        .copy-button {
+          position: absolute;
+          top: 10px;
+          right: 15px;
+          background: #430086;
+          color: white;
+          border-radius: 10px;
+          padding: 5px 8px;
+          border: 1px solid #7240a4;
+        }
+        .copy-button:hover {
+          border: 1px solid #8559b0;
         }
       `}</style>
-    </div>
+    </StackableContainer>
   );
 };
 

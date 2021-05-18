@@ -10,13 +10,20 @@ type Props = {
 };
 
 const Layout = ({ children, title = "This is the default title" }: Props) => (
-  <div>
+  <div className="page">
     <Head>
       <title>{title}</title>
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
     <StackableContainer base>{children}</StackableContainer>
+    <style jsx>{`
+      .page {
+        display: flex;
+        justify-content: center;
+        padding: 80px 0;
+      }
+    `}</style>
     <style global jsx>{`
       body {
         font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -24,11 +31,12 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
         color: white;
         min-height: 100vh;
         background: linear-gradient(
-          240.16deg,
-          #3f023c 10.46%,
-          #561253 54.88%,
-          #580a55 94.89%
+          249.99deg,
+          #3f007d 7.84%,
+          #430086 51.41%,
+          #320064 93.2%
         );
+
         font-size: 16px;
         margin: 0;
       }
@@ -65,6 +73,44 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
         font-size: 12px;
         font-style: italic;
         line-height: 14px;
+      }
+      .error {
+        color: red;
+      }
+      .error a {
+        color: red;
+      }
+
+      label {
+        font-style: italic;
+        margin-bottom: 1em;
+      }
+
+      input,
+      textarea {
+        background: #430086;
+        border: 1px solid #7240a4;
+        box-sizing: border-box;
+        border-radius: 9px;
+
+        color: white;
+        padding: 10px 5px;
+      }
+
+      input:hover,
+      textarea:hover {
+        border: 1px solid #8559b0;
+      }
+
+      input:active,
+      textarea:active,
+      input:focus,
+      textarea:focus {
+        border: 2px solid #ffffff;
+      }
+
+      input::placeholder {
+        color: rgba(255, 255, 255, 0.3);
       }
     `}</style>
   </div>

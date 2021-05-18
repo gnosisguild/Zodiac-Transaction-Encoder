@@ -1,6 +1,8 @@
 import * as React from "react";
 import { ethers } from "ethers";
 
+import StackableContainer from "./StackableContainer";
+
 type ABIInputProps = {
   setABI: React.Dispatch<
     React.SetStateAction<ethers.utils.Interface | undefined>
@@ -33,29 +35,34 @@ const ABIInput = ({ setABI }: ABIInputProps) => {
   };
 
   return (
-    <div>
-      <label htmlFor="ABI-input">Paste in ABI JSON here</label>
-      <textarea
-        id="ABI-input"
-        value={rawABI}
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-          setRawABI(e.target.value)
-        }
-        onPaste={handlePaste}
-        onBlur={handleBlur}
-      />
+    <StackableContainer lessMargin>
+      <StackableContainer lessMargin lessPadding lessRadius>
+        <label htmlFor="ABI-input">Paste in ABI JSON here</label>
+        <textarea
+          id="ABI-input"
+          value={rawABI}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setRawABI(e.target.value)
+          }
+          onPaste={handlePaste}
+          onBlur={handleBlur}
+        />
+      </StackableContainer>
       {ABIError && (
-        <div className="error">
-          <p>
-            That ABI doesn't seem quite right. Is the JSON malformed? To view an
-            example ABI{" "}
-            <a href="https://etherscan.io/address/0x1c511d88ba898b4D9cd9113D13B9c360a02Fcea1/#code">
-              look here.
-            </a>
-          </p>
-        </div>
+        <StackableContainer lessMargin lessPadding lessRadius>
+          <div className="error">
+            <p>
+              That ABI doesn't seem quite right. Is the JSON malformed?{" "}
+              <a href="https://etherscan.io/address/0x1c511d88ba898b4D9cd9113D13B9c360a02Fcea1/#code">
+                View an example ABI here
+              </a>
+              .
+            </p>
+          </div>
+        </StackableContainer>
       )}
-    </div>
+      <style jsx>{``}</style>
+    </StackableContainer>
   );
 };
 
