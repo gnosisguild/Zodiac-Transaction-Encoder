@@ -50,7 +50,7 @@ const ABIFunctionRenderer = ({
       setEncodeError("");
       setCallData(nextState);
     } catch (error) {
-      console.log("Encoding error: ", error);
+      console.log("Encoding error: ", error.message);
       // show error if every field has some value
       if (inputVals.filter((input) => input.value.length == 0).length == 0) {
         setEncodeError("Invalid or not enough data to generate call data");
