@@ -16,11 +16,11 @@ describe("IndexPage", () => {
 
     // select function
     await selectEvent.select(
-      screen.getByLabelText("Select function to render"),
+      screen.getByLabelText("Select function to encode"),
       "setMinimumBond"
     );
 
-    const bondInput = screen.getByLabelText("bond");
+    const bondInput = screen.getByLabelText("bond (uint256)");
     expect(bondInput).toBeInTheDocument();
 
     fireEvent.change(bondInput, { target: { value: "344444" } });
@@ -38,7 +38,7 @@ describe("IndexPage", () => {
 
     // select function
     await selectEvent.select(
-      screen.getByLabelText("Select function to render"),
+      screen.getByLabelText("Select function to encode"),
       "oracle"
     );
 
