@@ -25,6 +25,7 @@ const ABIFunctionRenderer = ({
     })
   );
   const [callData, setCallData] = React.useState<string>("");
+  const [encodeError, setEncodeError] = React.useState<string>("");
 
   React.useEffect(() => {
     setInputVals(
@@ -43,11 +44,14 @@ const ABIFunctionRenderer = ({
           return input.value;
         })
       );
-
+      setEncodeError("");
       setCallData(nextState);
     } catch (error) {
+      // show error if every field has some value
+      if (inputVals.filter((input) => input.value.length == 0).length == 0) {
+        setEncodeError("Invalid or not enough data to generate call data");
+      }
       setCallData("");
-      console.log("Invalid or not enough data to generate call data");
     }
   }, [inputVals]);
 
@@ -92,6 +96,13 @@ const ABIFunctionRenderer = ({
           <button className="copy-button">Copy to clipboard</button>
         </CopyToClipboard>
       </StackableContainer>
+      {encodeError && (
+        <StackableContainer lessMargin lessPadding lessRadius>
+          <div className="error">
+            <p>{encodeError}</p>
+          </div>
+        </StackableContainer>
+      )}
       <style jsx>{`
         .callData {
           padding: 1em;
