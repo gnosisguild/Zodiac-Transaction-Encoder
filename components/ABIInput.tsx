@@ -30,7 +30,7 @@ const ABIInput = ({ setABI }: ABIInputProps) => {
     parseABI(pastedVal);
   };
 
-  const handleBlur = (e: React.FocusEvent) => {
+  const handleBlur = () => {
     parseABI(rawABI);
   };
 
@@ -61,7 +61,6 @@ const ABIInput = ({ setABI }: ABIInputProps) => {
           </div>
         </StackableContainer>
       )}
-      <style jsx>{``}</style>
     </StackableContainer>
   );
 };
