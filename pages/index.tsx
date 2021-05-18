@@ -14,12 +14,17 @@ const IndexPage = () => {
   const [selectedABIFunction, selectABIFunction] =
     useState<string | undefined>(undefined);
 
+  const handleNewAbi = (parsedABI: ethers.utils.Interface | undefined) => {
+    selectABIFunction(undefined);
+    setParsedABI(parsedABI);
+  };
+
   return (
     <Layout title="ABI Explorer">
       <StackableContainer>
         <h1>ABI Function Encoder</h1>
       </StackableContainer>
-      <ABIInput setABI={setParsedABI} />
+      <ABIInput setABI={handleNewAbi} />
       {parsedABI && (
         <ABIFunctionSelect ABI={parsedABI} setFunction={selectABIFunction} />
       )}

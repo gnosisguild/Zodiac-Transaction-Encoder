@@ -4,9 +4,7 @@ import { ethers } from "ethers";
 import StackableContainer from "./StackableContainer";
 
 type ABIInputProps = {
-  setABI: React.Dispatch<
-    React.SetStateAction<ethers.utils.Interface | undefined>
-  >;
+  setABI: (parsedABI: ethers.utils.Interface | undefined) => void;
 };
 
 const ABIInput = ({ setABI }: ABIInputProps) => {
