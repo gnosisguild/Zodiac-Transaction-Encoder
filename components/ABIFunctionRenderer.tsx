@@ -41,12 +41,16 @@ const ABIFunctionRenderer = ({
       nextState = ABI.encodeFunctionData(
         ABIFunction.name,
         inputVals.map((input) => {
+          if (input.type.includes("[]")) {
+            return JSON.parse(input.value);
+          }
           return input.value;
         })
       );
       setEncodeError("");
       setCallData(nextState);
     } catch (error) {
+      console.log("Encoding error: ", error);
       // show error if every field has some value
       if (inputVals.filter((input) => input.value.length == 0).length == 0) {
         setEncodeError("Invalid or not enough data to generate call data");
