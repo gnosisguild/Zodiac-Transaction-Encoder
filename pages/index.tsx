@@ -1,5 +1,4 @@
 import { ethers } from "ethers";
-import Link from "next/link";
 import { useState } from "react";
 
 import ABIFunctionRenderer from "../components/ABIFunctionRenderer";
