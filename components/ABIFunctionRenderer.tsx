@@ -56,17 +56,22 @@ const ABIFunctionRenderer = ({
     setInputVals(nextState);
   };
 
+  const makeId = (input: InputVal, i: Number) => {
+    return `input-field-${i}-${input.name ? input.name : "generic"}`;
+  };
+
   return (
     <div>
       <ul>
         {inputVals.map((input, i) => (
-          <li key={i + input.name}>
-            <label>{input.name || "Input"}</label>
+          <li key={makeId(input, i)}>
+            <label htmlFor={makeId(input, i)}>{input.name || "Input"}</label>
             <input
               type="text"
               value={input.value}
               onChange={handleChange}
               name={input.name}
+              id={makeId(input, i)}
               data-input-type={input.type}
             />
           </li>

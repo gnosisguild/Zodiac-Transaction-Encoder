@@ -17,11 +17,14 @@ const ABIFunctionSelect = ({ ABI, setFunction }: ABIFunctionSelectProps) => {
 
   return (
     <div>
+      <label htmlFor="function-select-input">Select function to render</label>
       <Select
         options={createOptions(ABI)}
         onChange={(selected) => {
           setFunction(selected ? selected.value : undefined);
         }}
+        name="function-select"
+        inputId="function-select-input"
       />
     </div>
   );

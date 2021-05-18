@@ -34,7 +34,9 @@ const ABIInput = ({ setABI }: ABIInputProps) => {
 
   return (
     <div>
+      <label htmlFor="ABI-input">Paste in ABI JSON here</label>
       <textarea
+        id="ABI-input"
         value={rawABI}
         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
           setRawABI(e.target.value)
