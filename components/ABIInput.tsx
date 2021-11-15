@@ -37,13 +37,15 @@ const ABIInput = ({ onChange }: Props) => {
         <Address value={address} onChange={setAddress} />
       </StackableContainer>
       <StackableContainer lessMargin lessPadding lessRadius>
-        <label htmlFor="ABI-input">Paste in ABI</label>
+        <label htmlFor="ABI-input">
+          {success ? 'ABI from explorer' : 'Paste in ABI here'}
+        </label>
         <textarea
           id="ABI-input"
           readOnly={success}
           value={success ? fetchedAbiText : abiText}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-            setAbiText(sanitizeAbiText(e.target.value))
+            setAbiText(sanitiseAbiText(e.target.value))
           }}
         />
       </StackableContainer>
@@ -64,7 +66,7 @@ const ABIInput = ({ onChange }: Props) => {
   )
 }
 
-function sanitizeAbiText(abiText: string) {
+function sanitiseAbiText(abiText: string) {
   try {
     const json = JSON.parse(abiText)
     const formatted = new Interface(json).format(FormatTypes.FULL)
