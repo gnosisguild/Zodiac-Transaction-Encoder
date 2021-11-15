@@ -16,7 +16,7 @@ const IndexPage = () => {
         <h1>ABI Function Encoder</h1>
       </StackableContainer>
       <ABIInput onChange={setAbi} />
-      {abi && <ABIFunctionSelect ABI={abi} setFunction={setMethod} />}
+      {abi && <ABIFunctionSelect abi={abi} onChange={setMethod} />}
       {abi && method && (
         <ABIFunctionRenderer ABI={abi} ABIFunction={abi.functions[method]} />
       )}

@@ -5,8 +5,8 @@ import { Interface } from '@ethersproject/abi'
 import StackableContainer from './StackableContainer'
 
 type Props = {
-  ABI: Interface
-  setFunction: React.Dispatch<React.SetStateAction<string | null>>
+  abi: Interface
+  onChange(method: string): void
 }
 
 interface ThemeSpacing {
@@ -21,13 +21,12 @@ interface Theme {
   spacing: ThemeSpacing
 }
 
-const ABIFunctionSelect = ({ ABI, setFunction }: Props) => {
-  const createOptions = (abi: Interface) => {
-    const keys = Object.keys(abi.functions)
-    return keys.map((key) => {
-      return { value: key, label: abi.functions[key].name }
-    })
-  }
+const ABIFunctionSelect = ({ abi, onChange }: Props) => {
+  const createOptions = (abi: Interface) =>
+    Object.keys(abi.functions).map((key) => ({
+      value: key,
+      label: abi.functions[key].name,
+    }))
 
   const theme = (theme: Theme) => ({
     ...theme,
@@ -58,9 +57,9 @@ const ABIFunctionSelect = ({ ABI, setFunction }: Props) => {
         <label htmlFor="function-select-input">Select function to encode</label>
         <Select
           theme={theme}
-          options={createOptions(ABI)}
+          options={createOptions(abi)}
           onChange={(selected) => {
-            setFunction(selected?.value || null)
+            onChange((selected as { value: string; label: string }).value)
           }}
           name="function-select"
           inputId="function-select-input"
