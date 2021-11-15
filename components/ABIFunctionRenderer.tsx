@@ -1,74 +1,71 @@
-import * as React from "react";
-import { ethers } from "ethers";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import * as React from 'react'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
-import StackableContainer from "./StackableContainer";
+import StackableContainer from './StackableContainer'
+import { FunctionFragment, Interface } from '@ethersproject/abi'
 
-type ABIFunctionRendererProps = {
-  ABI: ethers.utils.Interface;
-  ABIFunction: ethers.utils.FunctionFragment;
-};
+type Props = {
+  ABI: Interface
+  ABIFunction: FunctionFragment
+}
 
 type InputVal = {
-  name: string;
-  type: string;
-  value: string;
-};
+  name: string
+  type: string
+  value: string
+}
 
-const ABIFunctionRenderer = ({
-  ABIFunction,
-  ABI,
-}: ABIFunctionRendererProps) => {
+const ABIFunctionRenderer = ({ ABIFunction, ABI }: Props) => {
   const [inputVals, setInputVals] = React.useState<InputVal[]>(
     ABIFunction.inputs.map((input) => {
-      return { name: input.name, type: input.type, value: "" };
+      return { name: input.name, type: input.type, value: '' }
     })
-  );
-  const [callData, setCallData] = React.useState<string>("");
-  const [encodeError, setEncodeError] = React.useState<string>("");
+  )
+  const [callData, setCallData] = React.useState<string>('')
+  const [encodeError, setEncodeError] = React.useState<string>('')
 
   React.useEffect(() => {
     setInputVals(
       ABIFunction.inputs.map((input) => {
-        return { name: input.name, type: input.type, value: "" };
+        return { name: input.name, type: input.type, value: '' }
       })
-    );
-  }, [ABIFunction]);
+    )
+  }, [ABIFunction])
 
   React.useEffect(() => {
-    let nextState = "";
+    let nextState = ''
     try {
       nextState = ABI.encodeFunctionData(
         ABIFunction.name,
         inputVals.map((input) => {
-          if (input.type.includes("[]")) {
-            return JSON.parse(input.value);
+          if (input.type.includes('[]')) {
+            return JSON.parse(input.value)
           }
-          return input.value;
+          return input.value
         })
-      );
-      setEncodeError("");
-      setCallData(nextState);
+      )
+      setEncodeError('')
+      setCallData(nextState)
     } catch (error) {
-      console.log("Encoding error: ", error.message);
+      console.log('Encoding error: ', error.message)
       // show error if every field has some value
       if (inputVals.filter((input) => input.value.length == 0).length == 0) {
-        setEncodeError("Invalid or not enough data to generate call data");
+        setEncodeError('Invalid or not enough data to generate call data')
       }
-      setCallData("");
+      setCallData('')
     }
-  }, [inputVals]);
+  }, [inputVals])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextState = inputVals.map((input) =>
       input.name === e.target.name ? { ...input, value: e.target.value } : input
-    );
-    setInputVals(nextState);
-  };
+    )
+    setInputVals(nextState)
+  }
 
   const makeId = (input: InputVal, i: Number) => {
-    return `input-field-${i}-${input.name ? input.name : "generic"}`;
-  };
+    return `input-field-${i}-${input.name ? input.name : 'generic'}`
+  }
 
   return (
     <StackableContainer lessMargin>
@@ -78,7 +75,7 @@ const ABIFunctionRenderer = ({
             <li key={makeId(input, i)}>
               <StackableContainer lessMargin lessPadding lessRadius>
                 <label htmlFor={makeId(input, i)}>
-                  {input.name || "Input"} ({input.type})
+                  {input.name || 'Input'} ({input.type})
                 </label>
                 <input
                   type="text"
@@ -142,7 +139,7 @@ const ABIFunctionRenderer = ({
         }
       `}</style>
     </StackableContainer>
-  );
-};
+  )
+}
 
-export default ABIFunctionRenderer;
+export default ABIFunctionRenderer
