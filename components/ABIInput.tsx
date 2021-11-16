@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FormatTypes, Interface } from '@ethersproject/abi'
+import { Interface } from '@ethersproject/abi'
 
 import StackableContainer from './StackableContainer'
 import { NetworkId, useAbiFetch } from './useAbiFetch'
@@ -45,7 +45,7 @@ const ABIInput = ({ onChange }: Props) => {
           readOnly={success}
           value={success ? fetchedAbiText : abiText}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-            setAbiText(sanitiseAbiText(e.target.value))
+            setAbiText(e.target.value)
           }}
         />
       </StackableContainer>
@@ -66,22 +66,19 @@ const ABIInput = ({ onChange }: Props) => {
   )
 }
 
-function sanitiseAbiText(abiText: string) {
-  try {
-    const json = JSON.parse(abiText)
-    const formatted = new Interface(json).format(FormatTypes.FULL)
-    return Array.isArray(formatted) ? formatted.join('\n') : formatted
-  } catch (e) {
-    return abiText
-  }
-}
-
 function parseAbiText(abiText: string) {
   if (abiText.trim().length === 0) {
     return null
   }
 
-  return new Interface(abiText.split('\n').filter((l) => l.trim().length > 0))
+  let sanitizedAbiText
+  try {
+    sanitizedAbiText = JSON.parse(abiText)
+  } catch (e) {
+    sanitizedAbiText = abiText.split('\n').filter((l) => l.trim().length > 0)
+  }
+
+  return new Interface(sanitizedAbiText)
 }
 
 export default ABIInput
