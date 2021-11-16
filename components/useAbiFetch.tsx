@@ -38,6 +38,7 @@ interface State {
   abi: Interface | null
   loading: boolean
   success: boolean
+  error: boolean
 }
 
 export const useAbiFetch = ({
@@ -45,27 +46,48 @@ export const useAbiFetch = ({
   network,
   blockExplorerApiKey,
 }: Props) => {
-  const [{ abiText, abi, loading, success }, setState] = useState<State>({
-    abiText: '',
-    abi: null,
-    loading: false,
-    success: false,
-  })
+  const [{ abiText, abi, loading, success, error }, setState] = useState<State>(
+    {
+      abiText: '',
+      abi: null,
+      loading: false,
+      success: false,
+      error: false,
+    }
+  )
 
   useEffect(() => {
     let canceled = false
 
     if (isValidAddress(address)) {
-      setState({ abi: null, abiText: '', loading: true, success: false })
+      setState({
+        abi: null,
+        abiText: '',
+        loading: true,
+        success: false,
+        error: false,
+      })
       fetchAbi(network, address, blockExplorerApiKey).then(
         ({ abi, abiText }) => {
           if (!canceled) {
-            setState({ abi, abiText, loading: false, success: abi !== null })
+            setState({
+              abi,
+              abiText,
+              loading: false,
+              success: abi !== null,
+              error: abi === null,
+            })
           }
         }
       )
     } else {
-      setState({ abi: null, abiText: '', loading: false, success: false })
+      setState({
+        abi: null,
+        abiText: '',
+        loading: false,
+        success: false,
+        error: !isEmptyText(address),
+      })
     }
 
     return () => {
@@ -78,6 +100,7 @@ export const useAbiFetch = ({
     abiText,
     loading,
     success,
+    error,
   }
 }
 
@@ -117,4 +140,8 @@ function isValidAddress(value: string): boolean {
   } catch (e) {
     return false
   }
+}
+
+function isEmptyText(value: string): boolean {
+  return value.trim().length === 0
 }

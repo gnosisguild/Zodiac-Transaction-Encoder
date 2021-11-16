@@ -16,7 +16,11 @@ const ABIInput = ({ onChange }: Props) => {
   const [abiText, setAbiText] = useState('')
   const [syntaxError, setSyntaxError] = useState(false)
 
-  const { abiText: fetchedAbiText, success } = useAbiFetch({ address, network })
+  const {
+    abiText: fetchedAbiText,
+    success: success,
+    error: error,
+  } = useAbiFetch({ address, network })
 
   useEffect(() => {
     try {
@@ -35,6 +39,7 @@ const ABIInput = ({ onChange }: Props) => {
       <StackableContainer lessMargin lessPadding lessRadius>
         <Network onChange={setNetwork} />
         <Address value={address} onChange={setAddress} />
+        {error && '@Sam TODO style fetch error'}
       </StackableContainer>
       <StackableContainer lessMargin lessPadding lessRadius>
         <label htmlFor="ABI-input">
