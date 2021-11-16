@@ -1,11 +1,15 @@
 import * as React from 'react'
 import Select from 'react-select'
-import { Interface } from '@ethersproject/abi'
+import { FunctionFragment } from '@ethersproject/abi'
 
 import StackableContainer from './StackableContainer'
 
+// TODO export this type from react-multisend
+type ContractFunction = FunctionFragment & { signature: string }
+
 type Props = {
-  abi: Interface
+  functions: ContractFunction[]
+  value: string
   onChange(method: string): void
 }
 
@@ -21,13 +25,7 @@ interface Theme {
   spacing: ThemeSpacing
 }
 
-const ABIFunctionSelect = ({ abi, onChange }: Props) => {
-  const createOptions = (abi: Interface) =>
-    Object.keys(abi.functions).map((key) => ({
-      value: key,
-      label: abi.functions[key].name,
-    }))
-
+const ABIFunctionSelect = ({ functions, onChange }: Props) => {
   const theme = (theme: Theme) => ({
     ...theme,
     borderRadius: 10,
@@ -57,9 +55,12 @@ const ABIFunctionSelect = ({ abi, onChange }: Props) => {
         <label htmlFor="function-select-input">Select function to encode</label>
         <Select
           theme={theme}
-          options={createOptions(abi)}
+          options={functions.map((func) => ({
+            value: func.signature,
+            label: func.name,
+          }))}
           onChange={(selected) => {
-            onChange((selected as { value: string; label: string }).value)
+            onChange(selected ? selected.value : '')
           }}
           name="function-select"
           inputId="function-select-input"

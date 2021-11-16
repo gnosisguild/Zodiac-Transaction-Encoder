@@ -592,6 +592,15 @@
     "@ethersproject/rlp" "^5.5.0"
     "@ethersproject/signing-key" "^5.5.0"
 
+"@ethersproject/units@^5.0.0":
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/@ethersproject/units/-/units-5.5.0.tgz#104d02db5b5dc42cc672cc4587bafb87a95ee45e"
+  integrity sha512-7+DpjiZk4v6wrikj+TCyWWa9dXLNU73tSTa7n0TSJDxkYbV3Yf1eRh9ToMLlZtuctNYu9RDNNy2USq3AdqSbag==
+  dependencies:
+    "@ethersproject/bignumber" "^5.5.0"
+    "@ethersproject/constants" "^5.5.0"
+    "@ethersproject/logger" "^5.5.0"
+
 "@ethersproject/web@^5.5.0":
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/web/-/web-5.5.0.tgz#0e5bb21a2b58fb4960a705bfc6522a6acf461e28"
@@ -2254,13 +2263,14 @@ etag@1.8.1:
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
 ethers-multisend@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/ethers-multisend/-/ethers-multisend-2.0.0.tgz#7321ee7b13c3fe5c2a14a6efc0045567894b6185"
-  integrity sha512-uHBC+m1zrgo5uyT5ILQg2k+n0kLCvxPvGiwURhD0dNlOXZb0vbqxh/jc9zg9x2deLkTppBcIIcz5PMuMBympBw==
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/ethers-multisend/-/ethers-multisend-2.0.1.tgz#4ddf3b0c7533d38e32293f37c8b5936268e07498"
+  integrity sha512-W34ELxwDodI9stN/PBn/XEhzNDMydE7jC29AZe/P1xFa1w4vF4QN6e/38J1ZLi/iZ14GZeZRcUnggOTWGYpRBQ==
   dependencies:
     "@ethersproject/abi" "^5.0.0"
     "@ethersproject/bytes" "^5.0.0"
     "@ethersproject/solidity" "^5.0.0"
+    "@ethersproject/units" "^5.0.0"
 
 events@^3.0.0:
   version "3.3.0"

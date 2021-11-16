@@ -1,55 +1,33 @@
-import { useEffect, useState } from 'react'
 import { FormatTypes, Interface } from '@ethersproject/abi'
 
 import StackableContainer from './StackableContainer'
-import { NetworkId, useAbiFetch } from './useAbiFetch'
-import Address from './Address'
-import Network from './Network'
 
 type Props = {
-  onChange(abi: Interface | null): void
+  value: string
+  onChange(value: string): void
+  readOnly?: boolean
 }
 
-const ABIInput = ({ onChange }: Props) => {
-  const [network, setNetwork] = useState<NetworkId>('1')
-  const [address, setAddress] = useState('')
-  const [abiText, setAbiText] = useState('')
-  const [syntaxError, setSyntaxError] = useState(false)
-
-  const { abiText: fetchedAbiText, success } = useAbiFetch({ address, network })
-
-  useEffect(() => {
-    try {
-      const abi = parseAbiText(success ? fetchedAbiText : abiText)
-      setSyntaxError(false)
-      onChange(abi)
-    } catch (error) {
-      console.log('ABI parsing error: ', error)
-      setSyntaxError(true)
-      onChange(null)
-    }
-  }, [abiText, fetchedAbiText, success])
+const ABIInput = ({ value, onChange, readOnly }: Props) => {
+  const formatted = formatAbi(value)
 
   return (
-    <StackableContainer lessMargin>
-      <StackableContainer lessMargin lessPadding lessRadius>
-        <Network onChange={setNetwork} />
-        <Address value={address} onChange={setAddress} />
-      </StackableContainer>
+    <>
       <StackableContainer lessMargin lessPadding lessRadius>
         <label htmlFor="ABI-input">
-          {success ? 'ABI from explorer' : 'Paste in ABI here'}
+          {readOnly ? 'ABI from explorer' : 'Paste in ABI here'}
         </label>
         <textarea
           id="ABI-input"
-          readOnly={success}
-          value={success ? fetchedAbiText : abiText}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-            setAbiText(sanitiseAbiText(e.target.value))
+          readOnly={readOnly}
+          value={formatted || value}
+          onChange={(ev) => {
+            onChange(parseAbi(ev.target.value))
           }}
+          aria-invalid={formatted !== null}
         />
       </StackableContainer>
-      {syntaxError && (
+      {formatted === null && (
         <StackableContainer lessMargin lessPadding lessRadius>
           <div className="error">
             <p>
@@ -62,26 +40,36 @@ const ABIInput = ({ onChange }: Props) => {
           </div>
         </StackableContainer>
       )}
-    </StackableContainer>
+    </>
   )
 }
 
-function sanitiseAbiText(abiText: string) {
-  try {
-    const json = JSON.parse(abiText)
-    const formatted = new Interface(json).format(FormatTypes.FULL)
-    return Array.isArray(formatted) ? formatted.join('\n') : formatted
-  } catch (e) {
-    return abiText
-  }
+const formatAbi = (value: string): string | null => {
+  if (!value) return null
+  const abiInterface = new Interface(value)
+  const formatted = abiInterface.format(FormatTypes.FULL)
+  if (typeof formatted === 'string') return formatted
+  return formatted.join('\n')
 }
 
-function parseAbiText(abiText: string) {
-  if (abiText.trim().length === 0) {
-    return null
+const parseAbi = (value: string): string => {
+  if (!value) return ''
+
+  let input
+  try {
+    // try if the value is JSON format
+    input = JSON.parse(value)
+  } catch (e) {
+    // it's not JSON, so maybe it's human readable format
+    input = value.split('\n')
   }
 
-  return new Interface(abiText.split('\n').filter((l) => l.trim().length > 0))
+  try {
+    const abiInterface = new Interface(input)
+    return abiInterface.format(FormatTypes.json) as string
+  } catch (e) {
+    return ''
+  }
 }
 
 export default ABIInput
