@@ -14,9 +14,9 @@ const IndexPage = () => {
   const [inputValues, setInputValues] = useState<InputValueMap>({})
 
   return (
-    <Layout title="ABI Explorer">
+    <Layout title="Transaction Encoder">
       <StackableContainer>
-        <h1>ABI Function Encoder</h1>
+        <h1>Transaction Encoder</h1>
       </StackableContainer>
       <ABIInput onChange={setAbi} />
       {abi && <FunctionSelect abi={abi} onChange={setMethod} />}

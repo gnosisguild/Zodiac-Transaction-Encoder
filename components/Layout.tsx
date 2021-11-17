@@ -31,9 +31,27 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
       }
     `}</style>
     <style global jsx>{`
+      @font-face {
+        font-family: 'Roboto Mono';
+        font-style: normal;
+        font-weight: 400;
+        src: url(/fonts/RobotoMono/roboto-mono-v13-latin-regular.woff)
+            format('woff2'),
+          url(/fonts/RobotoMono/roboto-mono-v13-latin-regular.woff2)
+            format('woff');
+      }
+
+      /* spectral-regular - latin */
+      @font-face {
+        font-family: 'Spectral';
+        font-style: normal;
+        font-weight: 400;
+        src: url(/fonts/Spectral/spectral-v7-latin-regular.woff) format('woff2'),
+          url(/fonts/Spectral/spectral-v7-latin-regular.woff2) format('woff');
+      }
+
       body {
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-          Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+        font-family: 'Spectral';
         color: white;
         min-height: 100vh;
         background: url(/zodiac-bg.svg);
@@ -91,6 +109,7 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
 
       input,
       textarea {
+        font-family: 'Roboto Mono', monospace;
         background: #430086;
         border: 1px solid #7240a4;
         box-sizing: border-box;
