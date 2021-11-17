@@ -21,7 +21,7 @@ interface Theme {
   spacing: ThemeSpacing
 }
 
-const ABIFunctionSelect = ({ abi, onChange }: Props) => {
+const FunctionSelect = ({ abi, onChange }: Props) => {
   const createOptions = (abi: Interface) =>
     Object.keys(abi.functions).map((key) => ({
       value: key,
@@ -51,22 +51,24 @@ const ABIFunctionSelect = ({ abi, onChange }: Props) => {
     },
   })
 
+  const options = createOptions(abi)
+
   return (
     <StackableContainer lessMargin>
       <StackableContainer lessMargin lessPadding lessRadius>
         <label htmlFor="function-select-input">Select function to encode</label>
         <Select
           theme={theme}
-          options={createOptions(abi)}
+          options={options}
+          name="function-select"
+          inputId="function-select-input"
           onChange={(selected) => {
             onChange((selected as { value: string; label: string }).value)
           }}
-          name="function-select"
-          inputId="function-select-input"
         />
       </StackableContainer>
     </StackableContainer>
   )
 }
 
-export default ABIFunctionSelect
+export default FunctionSelect

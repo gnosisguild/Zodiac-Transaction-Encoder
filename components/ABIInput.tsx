@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Interface } from '@ethersproject/abi'
+import { FormatTypes, Interface } from '@ethersproject/abi'
 
 import StackableContainer from './StackableContainer'
 import { NetworkId, useAbiFetch } from './useAbiFetch'
@@ -70,6 +70,17 @@ const ABIInput = ({ onChange }: Props) => {
     </StackableContainer>
   )
 }
+
+// function sanitize(abiText: string) {
+//   try {
+//     const t = JSON.parse(abiText)
+//     const abi = new Interface(t)
+//     const r = abi.format(FormatTypes.FULL)
+//     return Array.isArray(r) ? r.join('\n') : r
+//   } catch (e) {
+//     return abiText
+//   }
+// }
 
 function parseAbiText(abiText: string) {
   if (abiText.trim().length === 0) {
