@@ -1,14 +1,14 @@
-import React, { ReactNode } from "react";
-import Head from "next/head";
+import React, { ReactNode } from 'react'
+import Head from 'next/head'
 
-import StackableContainer from "./StackableContainer";
+import StackableContainer from './StackableContainer'
 
 type Props = {
-  children?: ReactNode;
-  title?: string;
-};
+  children?: ReactNode
+  title?: string
+}
 
-const Layout = ({ children, title = "This is the default title" }: Props) => (
+const Layout = ({ children, title = 'This is the default title' }: Props) => (
   <div className="page">
     <Head>
       <title>{title}</title>
@@ -21,6 +21,13 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
         display: flex;
         justify-content: center;
         padding: 80px 0;
+        background: linear-gradient(
+          108.86deg,
+          rgba(26, 33, 66, 0.85) 6.24%,
+          rgba(12, 19, 8, 0.85) 53.08%,
+          rgba(37, 6, 4, 0.85) 96.54%
+        );
+        min-height: 100vh;
       }
     `}</style>
     <style global jsx>{`
@@ -29,12 +36,9 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
           Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
         color: white;
         min-height: 100vh;
-        background: linear-gradient(
-          249.99deg,
-          #3f007d 7.84%,
-          #430086 51.41%,
-          #320064 93.2%
-        );
+        background: url(/zodiac-bg.svg);
+        background-size: cover;
+        background-attachment: fixed;
 
         font-size: 16px;
         margin: 0;
@@ -113,6 +117,6 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
       }
     `}</style>
   </div>
-);
+)
 
-export default Layout;
+export default Layout
