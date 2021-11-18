@@ -71,15 +71,8 @@ export function inputId(fn: FunctionFragment, input: ParamType, i: number) {
 }
 
 export function isInputValid(input: ParamType, value: string): boolean {
-  let sanitisedValue
   try {
-    sanitisedValue = JSON.parse(value)
-  } catch (e) {
-    sanitisedValue = value
-  }
-
-  try {
-    const result = defaultAbiCoder.encode([input.type], [sanitisedValue])
+    const result = defaultAbiCoder.encode([input.type], [maybeParseJSON(value)])
     return !!result
   } catch (e) {
     return false
@@ -94,34 +87,43 @@ function encode(
   let calldata = ''
   let encodeError = ''
 
-  const inputValues = fn.inputs.map(
-    (input, i) => inputValueMap[inputId(fn, input, i)]?.value || ''
+  const inputEntries = fn.inputs.map(
+    (input, i) => inputValueMap[inputId(fn, input, i)]
   )
+  const countFilled = inputEntries.filter(Boolean).length
+
+  const countValid = inputEntries.filter(
+    (entry) => entry?.isValid === true
+  ).length
+
+  const inputValues = inputEntries
+    .map((entry) => entry?.value || '')
+    .map(maybeParseJSON)
 
   try {
-    calldata = abi.encodeFunctionData(
-      fn.name,
-      inputValues.map((value) => {
-        try {
-          return JSON.parse(value)
-        } catch (e) {
-          return value
-        }
-      })
-    )
+    calldata = abi.encodeFunctionData(fn.name, inputValues)
     encodeError = ''
   } catch (error) {
-    const count = inputValues.filter((value) => value.trim().length > 0).length
     // show a console log if theres at least one filled input
-    if (count > 0) {
+    if (countFilled > 0) {
       console.log('Encoding error: ', error)
     }
-    // show ui error if every field has some value
-    if (fn.inputs.length === count) {
+
+    // @Sam not sure if this change makes sense
+    // if (fn.inputs.length === count) {
+    if (countFilled === fn.inputs.length && countValid > 0) {
       encodeError = 'Invalid or not enough data to generate call data'
     }
   }
   return { calldata, encodeError }
+}
+
+function maybeParseJSON(value: string) {
+  try {
+    return JSON.parse(value)
+  } catch (e) {
+    return value
+  }
 }
 
 export default ABIFunctionRenderer
