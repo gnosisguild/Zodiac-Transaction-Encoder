@@ -39,7 +39,9 @@ const ABIInput = ({ onChange }: Props) => {
       <StackableContainer inputContainer lessMargin>
         <Network onChange={setNetwork} />
         <Address value={address} onChange={setAddress} />
-        {error && '@Sam TODO style fetch error'}
+        {error && (
+          <span className="error">ABI for address could not be retrieved</span>
+        )}
       </StackableContainer>
       <StackableContainer inputContainer lessMargin>
         <label htmlFor="ABI-input">

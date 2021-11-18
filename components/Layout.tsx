@@ -93,6 +93,8 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
         line-height: 1.4;
       }
       .error {
+        margin-top: 0.25em;
+        font-size: 0.8em;
         color: red;
       }
       .error a {
@@ -116,14 +118,14 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
 
       input:hover,
       textarea:hover {
-        opacity: 0.9;
+        border-color: rgba(217, 212, 173, 1);
       }
 
       input:active,
       textarea:active,
       input:focus,
       textarea:focus {
-        border: 1px solid #ffffff;
+        border: 1px solid rgba(217, 212, 173, 1);
       }
 
       input::placeholder {
@@ -133,7 +135,7 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
       /* Works on Firefox*/
       * {
         scrollbar-width: thin;
-        scrollbar-color: rgba(217, 212, 173, 0.6) rgba(217, 212, 173, 0.1);
+        scrollbar-color: rgba(217, 212, 173, 0.8) rgba(217, 212, 173, 0.1);
       }
 
       /* Works on Chrome, Edge, and Safari */
