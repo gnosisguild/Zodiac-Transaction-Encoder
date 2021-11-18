@@ -6,12 +6,12 @@ import StackableContainer from '../components/StackableContainer'
 import ABIInput from '../components/ABIInput'
 import FunctionSelect from '../components/FunctionSelect'
 import Inputs from '../components/Inputs'
-import Encoder from '../components/Encoder'
+import Encoder, { InputValueMap } from '../components/Encoder'
 
 const IndexPage = () => {
   const [abi, setAbi] = useState<Interface | null>(null)
   const [method, setMethod] = useState<string | null>(null)
-  const [inputValues, setInputValues] = useState<{ [key: string]: string }>({})
+  const [inputValues, setInputValues] = useState<InputValueMap>({})
 
   return (
     <Layout title="ABI Explorer">
@@ -25,8 +25,8 @@ const IndexPage = () => {
           <Inputs
             fn={abi.functions[method]}
             inputValues={inputValues}
-            onChange={(id, value) =>
-              setInputValues({ ...inputValues, [id]: value })
+            onChange={(id, value, isValid) =>
+              setInputValues({ ...inputValues, [id]: { value, isValid } })
             }
           />
           <Encoder

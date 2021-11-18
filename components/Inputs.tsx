@@ -2,12 +2,12 @@ import * as React from 'react'
 
 import StackableContainer from './StackableContainer'
 import { FunctionFragment } from '@ethersproject/abi'
-import { inputId } from './Encoder'
+import { inputId, isInputValid, InputValueMap } from './Encoder'
 
 type Props = {
   fn: FunctionFragment
-  inputValues: { [key: string]: string }
-  onChange(id: string, value: string): void
+  inputValues: InputValueMap
+  onChange(id: string, value: string, isValid: boolean): void
 }
 
 const Inputs = ({ fn, inputValues, onChange }: Props) => (
@@ -15,6 +15,7 @@ const Inputs = ({ fn, inputValues, onChange }: Props) => (
     <ul>
       {fn.inputs.map((input, i) => {
         const id = inputId(fn, input, i)
+        const error = inputValues[id]?.value && !inputValues[id]?.isValid
         return (
           <li key={id}>
             <StackableContainer lessMargin lessPadding lessRadius>
@@ -26,9 +27,16 @@ const Inputs = ({ fn, inputValues, onChange }: Props) => (
                 id={id}
                 name={input.name}
                 data-input-type={input.type}
-                value={inputValues[id] || ''}
-                onChange={(ev) => onChange(id, ev.target.value)}
+                value={inputValues[id]?.value || ''}
+                onChange={(ev) =>
+                  onChange(
+                    id,
+                    ev.target.value,
+                    isInputValid(input, ev.target.value)
+                  )
+                }
               />
+              {error && '@Sam TODO style input error'}
             </StackableContainer>
           </li>
         )

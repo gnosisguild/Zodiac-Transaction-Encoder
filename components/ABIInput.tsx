@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FormatTypes, Interface } from '@ethersproject/abi'
+import { Interface } from '@ethersproject/abi'
 
 import StackableContainer from './StackableContainer'
 import { NetworkId, useAbiFetch } from './useAbiFetch'

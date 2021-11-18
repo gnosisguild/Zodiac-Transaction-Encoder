@@ -2,12 +2,21 @@ import * as React from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import StackableContainer from './StackableContainer'
-import { FunctionFragment, Interface, ParamType } from '@ethersproject/abi'
+import {
+  defaultAbiCoder,
+  FunctionFragment,
+  Interface,
+  ParamType,
+} from '@ethersproject/abi'
 
 type Props = {
   abi: Interface
   fn: FunctionFragment
-  inputValues: { [key: string]: string }
+  inputValues: InputValueMap
+}
+
+export type InputValueMap = {
+  [key: string]: { value: string; isValid: boolean }
 }
 
 const ABIFunctionRenderer = ({ abi, fn, inputValues }: Props) => {
@@ -61,24 +70,43 @@ export function inputId(fn: FunctionFragment, input: ParamType, i: number) {
   return `${fn.name}-${input.name ? input.name : i}`
 }
 
+export function isInputValid(input: ParamType, value: string): boolean {
+  let sanitisedValue
+  try {
+    sanitisedValue = JSON.parse(value)
+  } catch (e) {
+    sanitisedValue = value
+  }
+
+  try {
+    const result = defaultAbiCoder.encode([input.type], [sanitisedValue])
+    return !!result
+  } catch (e) {
+    return false
+  }
+}
+
 function encode(
   abi: Interface,
   fn: FunctionFragment,
-  inputValueMap: { [key: string]: string }
+  inputValueMap: InputValueMap
 ) {
   let calldata = ''
   let encodeError = ''
 
   const inputValues = fn.inputs.map(
-    (input, i) => inputValueMap[inputId(fn, input, i)] || ''
+    (input, i) => inputValueMap[inputId(fn, input, i)]?.value || ''
   )
 
   try {
     calldata = abi.encodeFunctionData(
       fn.name,
-      fn.inputs.map((input, i) => {
-        const value = inputValues[i]
-        return input.type.includes('[]') ? JSON.parse(value) : value
+      inputValues.map((value) => {
+        try {
+          return JSON.parse(value)
+        } catch (e) {
+          return value
+        }
       })
     )
     encodeError = ''
