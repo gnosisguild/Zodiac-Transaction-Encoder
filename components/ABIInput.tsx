@@ -35,13 +35,13 @@ const ABIInput = ({ onChange }: Props) => {
   }, [abiText, fetchedAbiText, success])
 
   return (
-    <StackableContainer lessMargin>
-      <StackableContainer lessMargin lessPadding lessRadius>
+    <>
+      <StackableContainer inputContainer lessMargin>
         <Network onChange={setNetwork} />
         <Address value={address} onChange={setAddress} />
         {error && '@Sam TODO style fetch error'}
       </StackableContainer>
-      <StackableContainer lessMargin lessPadding lessRadius>
+      <StackableContainer inputContainer lessMargin>
         <label htmlFor="ABI-input">
           {success ? 'ABI from explorer' : 'Paste in ABI here'}
         </label>
@@ -67,7 +67,7 @@ const ABIInput = ({ onChange }: Props) => {
           </div>
         </StackableContainer>
       )}
-    </StackableContainer>
+    </>
   )
 }
 

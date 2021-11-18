@@ -54,19 +54,17 @@ const FunctionSelect = ({ abi, onChange }: Props) => {
   const options = createOptions(abi)
 
   return (
-    <StackableContainer lessMargin>
-      <StackableContainer lessMargin lessPadding lessRadius>
-        <label htmlFor="function-select-input">Select function to encode</label>
-        <Select
-          theme={theme}
-          options={options}
-          name="function-select"
-          inputId="function-select-input"
-          onChange={(selected) => {
-            onChange((selected as { value: string; label: string }).value)
-          }}
-        />
-      </StackableContainer>
+    <StackableContainer lessMargin inputContainer>
+      <label htmlFor="function-select-input">Select function to encode</label>
+      <Select
+        theme={theme}
+        options={options}
+        name="function-select"
+        inputId="function-select-input"
+        onChange={(selected) => {
+          onChange((selected as { value: string; label: string }).value)
+        }}
+      />
     </StackableContainer>
   )
 }

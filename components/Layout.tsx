@@ -15,7 +15,7 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
-    <StackableContainer base>{children}</StackableContainer>
+    <div>{children}</div>
     <style jsx>{`
       .page {
         display: flex;
@@ -89,11 +89,8 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
         margin: 0;
       }
       p {
-        max-width: 350px;
         margin: 0;
-        font-size: 12px;
-        font-style: italic;
-        line-height: 14px;
+        line-height: 1.4;
       }
       .error {
         color: red;
@@ -103,36 +100,54 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
       }
 
       label {
-        font-style: italic;
-        margin-bottom: 1em;
+        margin-bottom: 0.5em;
       }
 
       input,
       textarea {
         font-family: 'Roboto Mono', monospace;
-        background: #430086;
-        border: 1px solid #7240a4;
+        background: none;
+        border: 1px solid white;
         box-sizing: border-box;
-        border-radius: 9px;
 
         color: white;
-        padding: 10px 5px;
+        padding: 10px;
       }
 
       input:hover,
       textarea:hover {
-        border: 1px solid #8559b0;
+        opacity: 0.9;
       }
 
       input:active,
       textarea:active,
       input:focus,
       textarea:focus {
-        border: 2px solid #ffffff;
+        border: 1px solid #ffffff;
       }
 
       input::placeholder {
         color: rgba(255, 255, 255, 0.3);
+      }
+
+      /* Works on Firefox*/
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(217, 212, 173, 0.6) rgba(217, 212, 173, 0.1);
+      }
+
+      /* Works on Chrome, Edge, and Safari */
+      *::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      *::-webkit-scrollbar-track {
+        background: none;
+      }
+
+      *::-webkit-scrollbar-thumb {
+        background-color: rgba(217, 212, 173, 0.3);
+        border-radius: 0px;
       }
     `}</style>
   </div>
