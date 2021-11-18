@@ -36,7 +36,11 @@ const Inputs = ({ fn, inputValues, onChange }: Props) => (
                   )
                 }
               />
-              {error && '@Sam TODO style input error'}
+              {error && (
+                <span className="error">
+                  Value does not match input type ({input.type})
+                </span>
+              )}
             </StackableContainer>
           </li>
         )

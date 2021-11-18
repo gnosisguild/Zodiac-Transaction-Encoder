@@ -95,7 +95,7 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
       .error {
         margin-top: 0.25em;
         font-size: 0.8em;
-        color: red;
+        color: #da3636;
       }
       .error a {
         color: red;
