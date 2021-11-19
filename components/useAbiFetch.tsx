@@ -5,24 +5,32 @@ import { useEffect, useState } from 'react'
 
 const NETWORK_ULS = {
   '1': 'https://api.etherscan.io/api',
-  '4': 'https://api-rinkeby.etherscan.io/api',
   '100': 'https://blockscout.com/xdai/mainnet/api',
-  '73799': 'https://volta-explorer.energyweb.org/api',
+  '4': 'https://api-rinkeby.etherscan.io/api',
+  '5': 'https://api-goerli.etherscan.io/api',
+  '10': 'https://api-optimistic.etherscan.io/api',
+  '42220': 'https://explorer.celo.org/api',
   '246': 'https://explorer.energyweb.org/api',
+  '73799': 'https://volta-explorer.energyweb.org/api',
   '137': 'https://api.polygonscan.com/api',
+  '80001': 'https://api-testnet.polygonscan.com/api',
   '56': 'https://api.bscscan.com/api',
   '42161': 'https://api.arbiscan.io/api',
 }
 
 export const NETWORK_NAMES: { [key: string]: string } = {
-  '1': 'Mainnet',
-  '4': 'Rinkeby',
-  '100': 'xDai',
-  '73799': 'Volta',
-  '246': 'EnergyWeb',
-  '137': 'Polygon',
-  '56': 'BSC',
-  '42161': 'Arbi',
+  '1': 'mainnet',
+  '100': 'xdai',
+  '4': 'rinkeby',
+  '5': 'görli',
+  '10': 'optimism',
+  '42220': 'celo',
+  '246': 'energyweb',
+  '73799': 'volta',
+  '137': 'polygon',
+  '80001': 'mumbai',
+  '56': 'bsc',
+  '42161': 'arbitrum',
 }
 
 export type NetworkId = keyof typeof NETWORK_ULS
@@ -117,21 +125,25 @@ const fetchAbi = async (
     apiKey: blockExplorerApiKey,
   })
 
-  const response = await fetch(`${apiUrl}?${params}`)
-  if (!response.ok) {
+  try {
+    const response = await fetch(`${apiUrl}?${params}`)
+    if (!response.ok) {
+      return { abi: null, abiText: '' }
+    }
+
+    const { result, status } = await response.json()
+    if (status === '0') {
+      console.error(`Could not fetch contract ABI: ${result}`)
+      return { abi: null, abiText: '' }
+    }
+
+    const abi = new Interface(result)
+    const formatted = abi.format(FormatTypes.FULL)
+    const abiText = Array.isArray(formatted) ? formatted.join('\n') : formatted
+    return { abi, abiText }
+  } catch (e) {
     return { abi: null, abiText: '' }
   }
-
-  const { result, status } = await response.json()
-  if (status === '0') {
-    console.error(`Could not fetch contract ABI: ${result}`)
-    return { abi: null, abiText: '' }
-  }
-
-  const abi = new Interface(result)
-  const formatted = abi.format(FormatTypes.FULL)
-  const abiText = Array.isArray(formatted) ? formatted.join('\n') : formatted
-  return { abi, abiText }
 }
 
 function isValidAddress(value: string): boolean {
