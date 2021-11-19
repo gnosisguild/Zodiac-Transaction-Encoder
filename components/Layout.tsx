@@ -6,24 +6,12 @@ type Props = {
   title?: string
 }
 
-const scriptTxt = `
-(function () {
-  const { pathname } = window.location
-  const ipfsMatch = /.*\\/Qm\\w{44}\\//.exec(pathname)
-  const base = document.createElement('base')
-
-  base.href = ipfsMatch ? ipfsMatch[0] : '/'
-  document.head.append(base)
-})();
-`
-
 const Layout = ({ children, title = 'This is the default title' }: Props) => (
   <div className="page">
     <Head>
       <title>{title}</title>
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      <script dangerouslySetInnerHTML={{ __html: scriptTxt }} />
     </Head>
     <div>{children}</div>
     <style jsx>{`
