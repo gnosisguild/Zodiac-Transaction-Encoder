@@ -60,7 +60,7 @@ const ABIInput = ({ onChange }: Props) => {
         <StackableContainer lessMargin lessPadding lessRadius>
           <div className="error">
             <p>
-              That ABI doesn't seem quite right. Is the JSON malformed?{' '}
+              That ABI doesn't seem quite right. Is it malformed?{' '}
               <a href="https://etherscan.io/address/0x1c511d88ba898b4D9cd9113D13B9c360a02Fcea1/#code">
                 View an example ABI here
               </a>
