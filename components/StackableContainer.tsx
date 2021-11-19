@@ -1,28 +1,37 @@
-import * as React from "react";
+import * as React from 'react'
 
 type Props = {
-  children?: React.ReactNode;
-  base?: boolean;
-  lessPadding?: boolean;
-  lessMargin?: boolean;
-  lessRadius?: boolean;
-};
+  children?: React.ReactNode
+  base?: boolean
+  inputContainer?: boolean
+  lessPadding?: boolean
+  lessMargin?: boolean
+  lessRadius?: boolean
+}
 
 export default (props: Props) => (
-  <div className={`container ${props.base ? "base" : ""}`}>
+  <div
+    className={`container ${props.base ? 'base' : ''} ${
+      props.inputContainer ? 'input-container' : ''
+    }`}
+  >
     {props.children}
 
     <style jsx>{`
       .container {
-        background: rgba(255, 255, 255, 0.05);
-        padding: ${props.lessPadding ? "15px" : "30px"};
-        margin-top: ${props.lessMargin ? "25px" : "50px"};
-        border-radius: ${props.lessRadius ? "10px" : "20px"};
+        position: relative;
+        padding: 12px;
+        margin-top: ${props.lessMargin ? '16px' : '50px'};
 
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         position: relative;
+
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgba(217, 212, 173, 0.3);
+        background: rgba(217, 212, 173, 0.01);
       }
 
       .container:first-child {
@@ -30,10 +39,7 @@ export default (props: Props) => (
       }
 
       .base {
-        min-width: 400px;
-        width: 40vw;
-        max-width: 650px;
-        background: #430086;
+        width: 470px;
         box-shadow: 0px 28px 80px rgba(0, 0, 0, 0.07),
           0px 12.7134px 39.2617px rgba(0, 0, 0, 0.0519173),
           0px 7.26461px 23.349px rgba(0, 0, 0, 0.0438747),
@@ -42,6 +48,28 @@ export default (props: Props) => (
           0px 1.53495px 5.02137px rgba(0, 0, 0, 0.0261253),
           0px 0.671179px 2.19114px rgba(0, 0, 0, 0.0180827);
       }
+
+      .base,
+      .input-container {
+        padding: 16px;
+      }
+
+      .base:before,
+      .input-container:before {
+        content: ' ';
+        position: absolute;
+        z-index: 1;
+        top: 3px;
+        left: 3px;
+        right: 3px;
+        bottom: 3px;
+        border: 1px solid rgba(217, 212, 173, 0.3);
+        pointer-events: none;
+      }
+
+      .input-container {
+        background: rgba(217, 212, 173, 0.1);
+      }
     `}</style>
   </div>
-);
+)
