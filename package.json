@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
+    "static": "next build && next export",
     "start": "next start",
     "type-check": "tsc",
     "test": "jest --config ./test/jest.config.ts"

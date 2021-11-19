@@ -29,7 +29,7 @@ const ABIFunctionRenderer = ({ abi, fn, inputValues }: Props) => {
         <textarea className="callData" disabled value={calldata} />
         <CopyToClipboard text={calldata}>
           <button className="copy-button">
-            <img src="/copy.png" alt="Copy and paste icon" />
+            <img src="copy.png" alt="Copy and paste icon" />
           </button>
         </CopyToClipboard>
       </StackableContainer>

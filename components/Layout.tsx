@@ -1,12 +1,21 @@
 import React, { ReactNode } from 'react'
 import Head from 'next/head'
 
-import StackableContainer from './StackableContainer'
-
 type Props = {
   children?: ReactNode
   title?: string
 }
+
+const scriptTxt = `
+(function () {
+  const { pathname } = window.location
+  const ipfsMatch = /.*\\/Qm\\w{44}\\//.exec(pathname)
+  const base = document.createElement('base')
+
+  base.href = ipfsMatch ? ipfsMatch[0] : '/'
+  document.head.append(base)
+})();
+`
 
 const Layout = ({ children, title = 'This is the default title' }: Props) => (
   <div className="page">
@@ -14,6 +23,7 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
       <title>{title}</title>
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      <script dangerouslySetInnerHTML={{ __html: scriptTxt }} />
     </Head>
     <div>{children}</div>
     <style jsx>{`
@@ -35,9 +45,9 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
         font-family: 'Roboto Mono';
         font-style: normal;
         font-weight: 400;
-        src: url(/fonts/RobotoMono/roboto-mono-v13-latin-regular.woff)
+        src: url(fonts/RobotoMono/roboto-mono-v13-latin-regular.woff)
             format('woff2'),
-          url(/fonts/RobotoMono/roboto-mono-v13-latin-regular.woff2)
+          url(fonts/RobotoMono/roboto-mono-v13-latin-regular.woff2)
             format('woff');
       }
 
@@ -46,15 +56,15 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
         font-family: 'Spectral';
         font-style: normal;
         font-weight: 400;
-        src: url(/fonts/Spectral/spectral-v7-latin-regular.woff) format('woff2'),
-          url(/fonts/Spectral/spectral-v7-latin-regular.woff2) format('woff');
+        src: url(fonts/Spectral/spectral-v7-latin-regular.woff) format('woff2'),
+          url(fonts/Spectral/spectral-v7-latin-regular.woff2) format('woff');
       }
 
       body {
         font-family: 'Spectral';
         color: white;
         min-height: 100vh;
-        background: url(/zodiac-bg.svg);
+        background: url(zodiac-bg.svg);
         background-size: cover;
         background-attachment: fixed;
 

@@ -19,5 +19,5 @@
     "target": "esnext"
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", "test/jest.config.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "test/jest.config.ts", "next.config.js"]
 }
