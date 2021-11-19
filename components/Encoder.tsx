@@ -24,41 +24,39 @@ const ABIFunctionRenderer = ({ abi, fn, inputValues }: Props) => {
 
   return (
     <>
-      <StackableContainer lessMargin lessPadding lessRadius>
+      <StackableContainer lessMargin inputContainer>
         <label>Call Data</label>
         <textarea className="callData" disabled value={calldata} />
         <CopyToClipboard text={calldata}>
-          <button className="copy-button">Copy to clipboard</button>
+          <button className="copy-button">
+            <img src="copy.png" alt="Copy and paste icon" />
+          </button>
         </CopyToClipboard>
       </StackableContainer>
       {encodeError && (
-        <StackableContainer lessMargin lessPadding lessRadius>
+        <StackableContainer lessMargin>
           <div className="error">
             <p>{encodeError}</p>
           </div>
         </StackableContainer>
       )}
       <style jsx>{`
-        .callData {
-          padding: 1em;
-        }
-        .callData:focus,
-        .callData:hover,
-        .callData:active {
-          border: 1px solid #7240a4;
-        }
         .copy-button {
           position: absolute;
-          top: 10px;
+          top: 15px;
           right: 15px;
-          background: #430086;
+          background: none;
           color: white;
           border-radius: 10px;
           padding: 5px 8px;
-          border: 1px solid #7240a4;
+          border: none;
         }
         .copy-button:hover {
-          border: 1px solid #8559b0;
+          background: rgba(217, 212, 173, 0.2);
+        }
+        .copy-button img {
+          display: block;
+          width: 16px;
         }
       `}</style>
     </>

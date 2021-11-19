@@ -18,7 +18,7 @@ const Inputs = ({ fn, inputValues, onChange }: Props) => (
         const error = inputValues[id]?.value && !inputValues[id]?.isValid
         return (
           <li key={id}>
-            <StackableContainer lessMargin lessPadding lessRadius>
+            <StackableContainer inputContainer>
               <label htmlFor={id}>
                 {input.name || 'Input'} ({input.type})
               </label>
@@ -36,7 +36,11 @@ const Inputs = ({ fn, inputValues, onChange }: Props) => (
                   )
                 }
               />
-              {error && '@Sam TODO style input error'}
+              {error && (
+                <span className="error">
+                  Value does not match input type ({input.type})
+                </span>
+              )}
             </StackableContainer>
           </li>
         )
@@ -45,11 +49,11 @@ const Inputs = ({ fn, inputValues, onChange }: Props) => (
     <style jsx>{`
       ul {
         list-style: none;
-        margin: 0;
+        margin: 1em 0 0 0;
         padding: 0;
       }
       li {
-        margin-top: 20px;
+        margin-top: 1em;
       }
       li:first-child {
         margin-top: 0;

@@ -35,13 +35,15 @@ const ABIInput = ({ onChange }: Props) => {
   }, [abiText, fetchedAbiText, success])
 
   return (
-    <StackableContainer lessMargin>
-      <StackableContainer lessMargin lessPadding lessRadius>
+    <>
+      <StackableContainer inputContainer lessMargin>
         <Network onChange={setNetwork} />
         <Address value={address} onChange={setAddress} />
-        {error && '@Sam TODO style fetch error'}
+        {error && (
+          <span className="error">ABI for address could not be retrieved</span>
+        )}
       </StackableContainer>
-      <StackableContainer lessMargin lessPadding lessRadius>
+      <StackableContainer inputContainer lessMargin>
         <label htmlFor="ABI-input">
           {success ? 'ABI from explorer' : 'Paste in ABI here'}
         </label>
@@ -58,7 +60,7 @@ const ABIInput = ({ onChange }: Props) => {
         <StackableContainer lessMargin lessPadding lessRadius>
           <div className="error">
             <p>
-              That ABI doesn't seem quite right. Is the JSON malformed?{' '}
+              That ABI doesn't seem quite right. Is it malformed?{' '}
               <a href="https://etherscan.io/address/0x1c511d88ba898b4D9cd9113D13B9c360a02Fcea1/#code">
                 View an example ABI here
               </a>
@@ -67,7 +69,7 @@ const ABIInput = ({ onChange }: Props) => {
           </div>
         </StackableContainer>
       )}
-    </StackableContainer>
+    </>
   )
 }
 
