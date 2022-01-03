@@ -37,10 +37,10 @@ export const NETWORK_NAMES: { [key: string]: string } = {
 }
 
 const RPC_URLS = {
-  '1': 'https://mainnet.infura.io',
+  '1': 'https://mainnet.infura.io/v3/2d043e79a14e4145b4e07dd3eb3a5a4b',
   '100': 'https://dai.poa.network',
-  '4': 'https://rinkeby.infura.io',
-  '5': 'https://goerli.infura.io',
+  '4': 'https://rinkeby.infura.io/v3/2d043e79a14e4145b4e07dd3eb3a5a4b',
+  '5': 'https://goerli.infura.io/v3/2d043e79a14e4145b4e07dd3eb3a5a4b',
   '10': 'https://mainnet.optimism.io',
   '42220': 'https://forno.celo.org',
   '246': 'https://rpc.energyweb.org',
