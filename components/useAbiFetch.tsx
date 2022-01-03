@@ -1,5 +1,8 @@
 import { FormatTypes, Interface } from '@ethersproject/abi'
+import { Provider } from '@ethersproject/abstract-provider'
+import { JsonRpcProvider } from '@ethersproject/providers'
 import { getAddress } from '@ethersproject/address'
+import detectProxyTarget from 'ethers-proxies'
 
 import { useEffect, useState } from 'react'
 
@@ -31,6 +34,21 @@ export const NETWORK_NAMES: { [key: string]: string } = {
   '80001': 'mumbai',
   '56': 'bsc',
   '42161': 'arbitrum',
+}
+
+const RPC_URLS = {
+  '1': 'https://mainnet.infura.io/v3/2d043e79a14e4145b4e07dd3eb3a5a4b',
+  '100': 'https://dai.poa.network',
+  '4': 'https://rinkeby.infura.io/v3/2d043e79a14e4145b4e07dd3eb3a5a4b',
+  '5': 'https://goerli.infura.io/v3/2d043e79a14e4145b4e07dd3eb3a5a4b',
+  '10': 'https://mainnet.optimism.io',
+  '42220': 'https://forno.celo.org',
+  '246': 'https://rpc.energyweb.org',
+  '73799': 'https://volta-rpc.energyweb.org',
+  '137': 'https://polygon-rpc.com',
+  '80001': 'https://rpc-mumbai.maticvigil.com',
+  '56': 'https://bsc-dataseed.binance.org',
+  '42161': 'https://arb1.arbitrum.io/rpc',
 }
 
 export type NetworkId = keyof typeof NETWORK_ULS
@@ -75,19 +93,22 @@ export const useAbiFetch = ({
         success: false,
         error: false,
       })
-      fetchAbi(network, address, blockExplorerApiKey).then(
-        ({ abi, abiText }) => {
-          if (!canceled) {
-            setState({
-              abi,
-              abiText,
-              loading: false,
-              success: abi !== null,
-              error: abi === null,
-            })
-          }
+      fetchAbi(
+        network,
+        address,
+        new JsonRpcProvider(RPC_URLS[network], parseInt(network)),
+        blockExplorerApiKey
+      ).then(({ abi, abiText }) => {
+        if (!canceled) {
+          setState({
+            abi,
+            abiText,
+            loading: false,
+            success: abi !== null,
+            error: abi === null,
+          })
         }
-      )
+      })
     } else {
       setState({
         abi: null,
@@ -112,38 +133,39 @@ export const useAbiFetch = ({
   }
 }
 
-const fetchAbi = async (
+export const fetchAbi = async (
   network: NetworkId,
-  address: string,
+  contractAddress: string,
+  provider: Provider,
   blockExplorerApiKey = ''
-) => {
+): Promise<{ abi: Interface | null; abiText: string }> => {
   const apiUrl = NETWORK_ULS[network]
   const params = new URLSearchParams({
     module: 'contract',
     action: 'getAbi',
-    address: address,
+    address: contractAddress,
     apiKey: blockExplorerApiKey,
   })
 
-  try {
-    const response = await fetch(`${apiUrl}?${params}`)
-    if (!response.ok) {
-      return { abi: null, abiText: '' }
-    }
-
-    const { result, status } = await response.json()
-    if (status === '0') {
-      console.error(`Could not fetch contract ABI: ${result}`)
-      return { abi: null, abiText: '' }
-    }
-
-    const abi = new Interface(result)
-    const formatted = abi.format(FormatTypes.FULL)
-    const abiText = Array.isArray(formatted) ? formatted.join('\n') : formatted
-    return { abi, abiText }
-  } catch (e) {
+  const response = await fetch(`${apiUrl}?${params}`)
+  if (!response.ok) {
     return { abi: null, abiText: '' }
   }
+
+  const { result, status } = await response.json()
+
+  if (status === '0' || looksLikeAProxy(result)) {
+    // Is this a proxy contract?
+    const proxyTarget = await detectProxyTarget(contractAddress, provider)
+    return proxyTarget
+      ? await fetchAbi(network, proxyTarget, provider, blockExplorerApiKey)
+      : { abi: null, abiText: '' }
+  }
+
+  const abi = new Interface(result)
+  const formatted = abi.format(FormatTypes.FULL)
+  const abiText = Array.isArray(formatted) ? formatted.join('\n') : formatted
+  return { abi, abiText }
 }
 
 function isValidAddress(value: string): boolean {
@@ -156,4 +178,10 @@ function isValidAddress(value: string): boolean {
 
 function isEmptyText(value: string): boolean {
   return value.trim().length === 0
+}
+
+const looksLikeAProxy = (abi: string) => {
+  const iface = new Interface(abi)
+  const signatures = Object.keys(iface.functions)
+  return signatures.length === 0
 }
