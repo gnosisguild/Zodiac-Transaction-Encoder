@@ -133,11 +133,13 @@ export const useAbiFetch = ({
   }
 }
 
+const DEFAULT_ETHERSCAN_API_KEY = '9D13ZE7XSBTJ94N9BNJ2MA33VMAY2YPIRB'
+
 export const fetchAbi = async (
   network: NetworkId,
   contractAddress: string,
   provider: Provider,
-  blockExplorerApiKey = ''
+  blockExplorerApiKey = DEFAULT_ETHERSCAN_API_KEY
 ): Promise<{ abi: Interface | null; abiText: string }> => {
   const apiUrl = NETWORK_ULS[network]
   const params = new URLSearchParams({
@@ -147,12 +149,17 @@ export const fetchAbi = async (
     apiKey: blockExplorerApiKey,
   })
 
-  const response = await fetch(`${apiUrl}?${params}`)
+  const response = await throttledFetch(`${apiUrl}?${params}`)
   if (!response.ok) {
     return { abi: null, abiText: '' }
   }
 
-  const { result, status } = await response.json()
+  let { result, status } = await response.json()
+
+  if (result && result.toLowerCase().indexOf('rate limit') >= 0) {
+    console.error('Block explorer API rate limit is exceeded.')
+    return { abi: null, abiText: '' }
+  }
 
   if (status === '0' || looksLikeAProxy(result)) {
     // Is this a proxy contract?
@@ -184,4 +191,36 @@ const looksLikeAProxy = (abi: string) => {
   const iface = new Interface(abi)
   const signatures = Object.keys(iface.functions)
   return signatures.length === 0
+}
+
+const throttledFetch = throttle(fetch, 5)
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+function throttle<T extends (...args: any[]) => Promise<any>>(
+  callback: T,
+  callsPerSecond: number
+): T {
+  let slotStart = 0
+  let callsPending = 0
+
+  const throttled = (async (...args) => {
+    if (slotStart === 0) slotStart = Date.now()
+
+    const slotsPassed = Math.floor(Date.now() - slotStart / 1000)
+    if (slotsPassed > 0) {
+      // we've reached a later slot, this means some pending calls have been dispatched
+      callsPending = Math.max(callsPending - slotsPassed * callsPerSecond, 0)
+    }
+
+    // Calculate delay based on the number of pending calls.
+    // We need to wait for all already filled slots to pass.
+    const delay = Math.floor(callsPending / callsPerSecond) * 1000
+    callsPending++
+    if (delay > 0) await wait(delay)
+
+    return callback(...args)
+  }) as T
+
+  return throttled
 }
