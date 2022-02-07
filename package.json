@@ -1,6 +1,7 @@
 {
   "name": "with-typescript",
   "version": "1.0.0",
+  "homepage": "./",
   "scripts": {
     "dev": "next",
     "build": "next build",
@@ -15,6 +16,7 @@
     "@ethersproject/address": "^5.0.0",
     "@ethersproject/bignumber": "^5.0.0",
     "@ethersproject/providers": "^5.5.1",
+    "@types/node-fetch": "^3.0.3",
     "@types/react-copy-to-clipboard": "^5.0.0",
     "@types/react-select": "^4.0.15",
     "ethers-proxies": "^1.0.0",
