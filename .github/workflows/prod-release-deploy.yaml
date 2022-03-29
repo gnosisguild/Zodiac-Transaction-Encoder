@@ -5,7 +5,7 @@ on:
     types: created
 
 jobs:
-  test-deploy:
+  deploy:
     runs-on: ubuntu-latest
     name: Deploy to Prod
     steps:
