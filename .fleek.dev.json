@@ -1,0 +1,14 @@
+{
+  "site": {
+    "id": "c18ce3a4-b6af-4475-a7ce-a0ef4887f59e",
+    "team": "ae342e76-2b64-47fd-80f2-cf0274e932f7",
+    "platform": "ipfs",
+    "source": "ipfs",
+    "name": "odd-term-2474"
+  },
+  "build": {
+    "baseDir": "",
+    "publicDir": "./out/",
+    "rootDir": ""
+  }
+}
