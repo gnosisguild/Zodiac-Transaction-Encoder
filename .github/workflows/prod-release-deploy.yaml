@@ -2,7 +2,7 @@ name: Prod Release Deployment
 
 on:
   release:
-    types: [published, created, edited]
+    types: created
 
 jobs:
   test-deploy:
