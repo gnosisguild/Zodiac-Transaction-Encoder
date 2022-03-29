@@ -17,7 +17,7 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn static
       - name: Setup fleek config file
-        run: cp ./fleek.dev.json ./fleek.json
+        run: cp ./.fleek.dev.json ./.fleek.json
       - name: Deploy test site
         id: deploy
         uses: fleekhq/action-deploy@v1
