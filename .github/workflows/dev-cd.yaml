@@ -33,4 +33,4 @@ jobs:
           cidv0: ${{ steps.upload.outputs.hash }}
 
       - name: Get IPFS url
-        run: echo "IPFS gateways: https://${{ steps.convert_cidv0.outputs.cidv1 }}.ipfs.dweb.link/ or https://${{ steps.convert_cidv0.outputs.cidv1 }}.ipfs.cf-ipfs.com/"
+        run: echo "IPFS gateways — https://${{ steps.convert_cidv0.outputs.cidv1 }}.ipfs.dweb.link/ or https://${{ steps.convert_cidv0.outputs.cidv1 }}.ipfs.cf-ipfs.com/"
