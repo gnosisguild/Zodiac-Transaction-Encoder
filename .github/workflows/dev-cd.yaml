@@ -16,12 +16,15 @@ jobs:
       - run: npm install -g yarn
       - run: yarn install --frozen-lockfile
       - run: yarn static
-      - name: Setup fleek config file
-        run: cp ./.fleek.dev.json ./.fleek.json
-      - name: Deploy test site
-        id: deploy
-        uses: fleekhq/action-deploy@v1
+
+      - name: Pin to IPFS
+        id: upload
+        uses: anantaramdas/ipfs-pinata-deploy-action@39bbda1ce1fe24c69c6f57861b8038278d53688d
         with:
-          apiKey: ${{ secrets.FLEEK_API_KEY }}
+          pin-name: Transaction Encoder - Latest — ${ GITHUB_SHA }
+          path: './out'
+          pinata-api-key: ${{ secrets.PINATA_API_KEY }}
+          pinata-secret-api-key: ${{ secrets.PINATA_API_SECRET_KEY }}
+
       - name: Get the output url
-        run: echo "Deploy url is ${{ steps.deploy.outputs.deployUrl }}"
+        run: echo "IPFS hash is ${{ steps.deploy.upload.hash }}"
