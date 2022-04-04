@@ -27,4 +27,4 @@ jobs:
           pinata-secret-api-key: ${{ secrets.PINATA_API_SECRET_KEY }}
 
       - name: Get the output url
-        run: echo "IPFS hash is ${{ steps.deploy.upload.hash }}"
+        run: echo "IPFS hash is ${{ steps.upload.outputs.hash }}"
