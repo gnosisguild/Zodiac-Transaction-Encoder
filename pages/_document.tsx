@@ -4,9 +4,16 @@ const scriptTxt = `
 (function () {
   const { pathname } = window.location
   const ipfsMatch = /.*\\/Qm\\w{44}\\//.exec(pathname)
+  const ipnsMatch = /.*gnosisguild\.org\//.exec(pathname)
   const base = document.createElement('base')
 
-  base.href = ipfsMatch ? ipfsMatch[0] : '/'
+  if (ipfsMatch) {
+    base.href = ipfsMatch[0]
+  } else if (ipnsMatch) {
+    base.href = ipnsMatch[0]
+  } else {
+    base.href = '/'
+  }
   document.head.append(base)
 })();
 `
