@@ -2,29 +2,19 @@ import { useEffect, useState } from 'react'
 import { Interface } from '@ethersproject/abi'
 
 import StackableContainer from './StackableContainer'
-import { NetworkId, useAbiFetch } from './useAbiFetch'
-import Address from './Address'
-import Network from './Network'
 
 type Props = {
+  fetchedAbiText: string | null
   onChange(abi: Interface | null): void
 }
 
-const ABIInput = ({ onChange }: Props) => {
-  const [network, setNetwork] = useState<NetworkId>('1')
-  const [address, setAddress] = useState('')
+const ABIInput = ({ fetchedAbiText, onChange }: Props) => {
   const [abiText, setAbiText] = useState('')
   const [syntaxError, setSyntaxError] = useState(false)
 
-  const {
-    abiText: fetchedAbiText,
-    success: success,
-    error: error,
-  } = useAbiFetch({ address, network })
-
   useEffect(() => {
     try {
-      const abi = parseAbiText(success ? fetchedAbiText : abiText)
+      const abi = parseAbiText(fetchedAbiText || abiText)
       setSyntaxError(false)
       onChange(abi)
     } catch (error) {
@@ -32,26 +22,19 @@ const ABIInput = ({ onChange }: Props) => {
       setSyntaxError(true)
       onChange(null)
     }
-  }, [abiText, fetchedAbiText, success])
+  }, [abiText, fetchedAbiText])
 
   return (
     <>
       <StackableContainer inputContainer lessMargin>
-        <Network onChange={setNetwork} />
-        <Address value={address} onChange={setAddress} />
-        {error && (
-          <span className="error">ABI for address could not be retrieved</span>
-        )}
-      </StackableContainer>
-      <StackableContainer inputContainer lessMargin>
         <label htmlFor="ABI-input">
-          {success ? 'ABI from explorer' : 'Paste in ABI here'}
+          {fetchedAbiText ? 'ABI from explorer' : 'Paste in ABI here'}
         </label>
         <textarea
           id="ABI-input"
           className="ABI-input"
-          readOnly={success}
-          value={success ? fetchedAbiText : abiText}
+          readOnly={!!fetchedAbiText}
+          value={fetchedAbiText || abiText}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
             setAbiText(e.target.value)
           }}
@@ -80,17 +63,6 @@ const ABIInput = ({ onChange }: Props) => {
     </>
   )
 }
-
-// function sanitize(abiText: string) {
-//   try {
-//     const t = JSON.parse(abiText)
-//     const abi = new Interface(t)
-//     const r = abi.format(FormatTypes.FULL)
-//     return Array.isArray(r) ? r.join('\n') : r
-//   } catch (e) {
-//     return abiText
-//   }
-// }
 
 function parseAbiText(abiText: string) {
   if (abiText.trim().length === 0) {

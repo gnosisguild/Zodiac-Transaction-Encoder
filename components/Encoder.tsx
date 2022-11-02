@@ -77,7 +77,7 @@ export function isInputValid(input: ParamType, value: string): boolean {
   }
 }
 
-function encode(
+export function encode(
   abi: Interface,
   fn: FunctionFragment,
   inputValueMap: InputValueMap
