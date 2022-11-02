@@ -4,7 +4,7 @@ const scriptTxt = `
 (function () {
   const { pathname } = window.location
   const ipfsMatch = /.*\\/Qm\\w{44}\\//.exec(pathname)
-  const ipnsMatch = /.*gnosisguild\.org\//.exec(pathname)
+  const ipnsMatch = /.*gnosisguild\.org\\//.exec(pathname)
   const base = document.createElement('base')
 
   if (ipfsMatch) {
@@ -19,12 +19,11 @@ const scriptTxt = `
 `
 
 class MyDocument extends Document {
-
   render() {
     return (
       <Html>
         <Head>
-            <script dangerouslySetInnerHTML={{__html: scriptTxt}}/>
+          <script dangerouslySetInnerHTML={{ __html: scriptTxt }} />
         </Head>
         <body>
           <Main />
