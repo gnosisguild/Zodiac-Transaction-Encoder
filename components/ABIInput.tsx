@@ -49,6 +49,7 @@ const ABIInput = ({ onChange }: Props) => {
         </label>
         <textarea
           id="ABI-input"
+          className="ABI-input"
           readOnly={success}
           value={success ? fetchedAbiText : abiText}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -69,6 +70,13 @@ const ABIInput = ({ onChange }: Props) => {
           </div>
         </StackableContainer>
       )}
+
+      <style jsx>{`
+        .ABI-input {
+          resize: vertical;
+          white-space: pre;
+        }
+      `}</style>
     </>
   )
 }
