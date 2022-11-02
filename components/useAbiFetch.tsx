@@ -38,7 +38,7 @@ export const NETWORK_NAMES: { [key: string]: string } = {
 
 const RPC_URLS = {
   '1': 'https://mainnet.infura.io/v3/2d043e79a14e4145b4e07dd3eb3a5a4b',
-  '100': 'https://dai.poa.network',
+  '100': 'https://rpc.gnosischain.com',
   '4': 'https://rinkeby.infura.io/v3/2d043e79a14e4145b4e07dd3eb3a5a4b',
   '5': 'https://goerli.infura.io/v3/2d043e79a14e4145b4e07dd3eb3a5a4b',
   '10': 'https://mainnet.optimism.io',
