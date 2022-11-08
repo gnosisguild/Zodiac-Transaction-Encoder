@@ -1,6 +1,6 @@
 import * as React from 'react'
+import { NetworkId, NETWORK_NAMES } from './networks'
 import Select from './Select'
-import { NetworkId, NETWORK_NAMES } from './useAbiFetch'
 
 type Props = {
   onChange(networkId: NetworkId): void
@@ -8,7 +8,7 @@ type Props = {
 
 const options = Object.keys(NETWORK_NAMES).map((key) => ({
   value: key as NetworkId,
-  label: NETWORK_NAMES[key],
+  label: NETWORK_NAMES[key as NetworkId],
 }))
 
 const Network = ({ onChange }: Props) => {

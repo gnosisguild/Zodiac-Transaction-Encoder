@@ -10,6 +10,7 @@ import Encoder, { InputValueMap } from '../components/Encoder'
 import Address from '../components/Address'
 import Network from '../components/Network'
 import { NetworkId, useAbiFetch } from '../components/useAbiFetch'
+import Call from '../components/Call'
 
 const IndexPage = () => {
   const [network, setNetwork] = useState<NetworkId>('1')
@@ -58,6 +59,16 @@ const IndexPage = () => {
               fn={abi.functions[method]}
               inputValues={inputValues}
             />
+
+            {address && network && (
+              <Call
+                network={network}
+                address={address}
+                abi={abi}
+                fn={abi.functions[method]}
+                inputValues={inputValues}
+              />
+            )}
           </>
         )}
       </StackableContainer>
