@@ -9,7 +9,7 @@ type Props = {
   lessRadius?: boolean
 }
 
-export default (props: Props) => (
+const StackableContainer = (props: Props) => (
   <div
     className={`container ${props.base ? 'base' : ''} ${
       props.inputContainer ? 'input-container' : ''
@@ -73,3 +73,5 @@ export default (props: Props) => (
     `}</style>
   </div>
 )
+
+export default StackableContainer

@@ -25,7 +25,7 @@ const ABIFunctionRenderer = ({ abi, fn, inputValues }: Props) => {
   return (
     <>
       <StackableContainer lessMargin inputContainer>
-        <label>Call Data</label>
+        <label>Call data</label>
         <textarea className="callData" disabled value={calldata} />
         <CopyToClipboard text={calldata}>
           <button className="copy-button">
@@ -58,6 +58,10 @@ const ABIFunctionRenderer = ({ abi, fn, inputValues }: Props) => {
           display: block;
           width: 16px;
         }
+
+        .callData {
+          resize: vertical;
+        }
       `}</style>
     </>
   )
@@ -77,7 +81,17 @@ export function isInputValid(input: ParamType, value: string): boolean {
   }
 }
 
-function encode(
+export function processInputValues(
+  fn: FunctionFragment,
+  inputValueMap: InputValueMap
+) {
+  const inputEntries = fn.inputs.map(
+    (input, i) => inputValueMap[inputId(fn, input, i)]
+  )
+  return inputEntries.map((entry) => entry?.value || '').map(maybeParseJSON)
+}
+
+export function encode(
   abi: Interface,
   fn: FunctionFragment,
   inputValueMap: InputValueMap
@@ -94,9 +108,7 @@ function encode(
     (entry) => entry?.isValid === true
   ).length
 
-  const inputValues = inputEntries
-    .map((entry) => entry?.value || '')
-    .map(maybeParseJSON)
+  const inputValues = processInputValues(fn, inputValueMap)
 
   try {
     calldata = abi.encodeFunctionData(fn.name, inputValues)

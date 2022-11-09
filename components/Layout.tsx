@@ -106,6 +106,7 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
       input,
       textarea {
         font-family: 'Roboto Mono', monospace;
+        font-size: 0.85em;
         background: none;
         border: 1px solid white;
         box-sizing: border-box;
@@ -130,15 +131,22 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
         color: rgba(255, 255, 255, 0.3);
       }
 
+      code {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.85em;
+      }
+
       /* Works on Firefox*/
       * {
         scrollbar-width: thin;
+        scrollbar-height: thin;
         scrollbar-color: rgba(217, 212, 173, 0.8) rgba(217, 212, 173, 0.1);
       }
 
       /* Works on Chrome, Edge, and Safari */
       *::-webkit-scrollbar {
         width: 6px;
+        height: 6px;
       }
 
       *::-webkit-scrollbar-track {
