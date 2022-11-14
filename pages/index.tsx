@@ -9,8 +9,9 @@ import Inputs from '../components/Inputs'
 import Encoder, { InputValueMap } from '../components/Encoder'
 import Address from '../components/Address'
 import Network from '../components/Network'
-import { NetworkId, useAbiFetch } from '../components/useAbiFetch'
+import { useAbiFetch } from '../components/useAbiFetch'
 import Call from '../components/Call'
+import { NetworkId } from '../components/networks'
 
 const IndexPage = () => {
   const [network, setNetwork] = useState<NetworkId>('1')
