@@ -68,6 +68,10 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
       button {
         cursor: pointer;
       }
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.75;
+      }
       h1 {
         margin: 0;
         font-weight: 400;
