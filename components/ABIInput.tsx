@@ -12,9 +12,13 @@ const ABIInput = ({ fetchedAbiText, onChange }: Props) => {
   const [abiText, setAbiText] = useState('')
   const [syntaxError, setSyntaxError] = useState(false)
 
+  const text = fetchedAbiText || abiText
+  const jsonText = formatAbiText(text, 'json')
+  const humanText = formatAbiText(text, 'human')
+
   useEffect(() => {
     try {
-      const abi = parseAbiText(fetchedAbiText || abiText)
+      const abi = parseAbiText(text)
       setSyntaxError(false)
       onChange(abi)
     } catch (error) {
@@ -22,19 +26,39 @@ const ABIInput = ({ fetchedAbiText, onChange }: Props) => {
       setSyntaxError(true)
       onChange(null)
     }
-  }, [abiText, fetchedAbiText])
+  }, [text])
+
+  const disableFormatButtons = syntaxError || !text.trim()
 
   return (
     <>
       <StackableContainer inputContainer lessMargin>
-        <label htmlFor="ABI-input">
-          {fetchedAbiText ? 'ABI from explorer' : 'Paste in ABI here'}
-        </label>
+        <div className="field-head">
+          <label htmlFor="ABI-input">
+            {fetchedAbiText ? 'ABI from explorer' : 'Paste in ABI here'}
+          </label>
+          <div className="formats">
+            <button
+              aria-pressed={!disableFormatButtons && text.trim() === jsonText}
+              disabled={disableFormatButtons}
+              onClick={() => jsonText && setAbiText(jsonText)}
+            >
+              json
+            </button>
+            <button
+              aria-pressed={!disableFormatButtons && text.trim() === humanText}
+              disabled={disableFormatButtons}
+              onClick={() => humanText && setAbiText(humanText)}
+            >
+              human
+            </button>
+          </div>
+        </div>
         <textarea
           id="ABI-input"
           className="ABI-input"
           readOnly={!!fetchedAbiText}
-          value={fetchedAbiText || abiText}
+          value={text}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
             setAbiText(e.target.value)
           }}
@@ -59,6 +83,25 @@ const ABIInput = ({ fetchedAbiText, onChange }: Props) => {
           resize: vertical;
           white-space: pre;
         }
+
+        .field-head {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+        }
+
+        .formats button {
+          background: none;
+          border: none;
+          color: white;
+          font-size: 11px;
+        }
+        .formats button[aria-pressed='true'] {
+          background: none;
+          border: 1px solid white;
+          color: white;
+          font-size: 11px;
+        }
       `}</style>
     </>
   )
@@ -77,6 +120,22 @@ function parseAbiText(abiText: string) {
   }
 
   return new Interface(sanitizedAbiText)
+}
+
+function formatAbiText(abiText: string, format?: 'json' | 'human') {
+  if (!format) return abiText
+
+  try {
+    const abi = parseAbiText(abiText)
+    if (!abi) return abiText
+    if (format === 'json') {
+      return JSON.stringify(JSON.parse(abi.format('json') as string), null, 2)
+    } else {
+      return (abi.format('full') as string[]).join('\n')
+    }
+  } catch (e) {
+    return null
+  }
 }
 
 export default ABIInput
