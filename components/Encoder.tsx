@@ -77,6 +77,7 @@ export function isInputValid(input: ParamType, value: string): boolean {
     const result = defaultAbiCoder.encode([input.type], [maybeParseJSON(value)])
     return !!result
   } catch (e) {
+    console.warn('invalid input', e, { input, value })
     return false
   }
 }
@@ -130,7 +131,12 @@ export function encode(
 
 function maybeParseJSON(value: string) {
   try {
-    return JSON.parse(value)
+    const result = JSON.parse(value)
+    if (typeof result === 'number') {
+      // we want to keep numbers as strings to avoid overflow issues
+      return value
+    }
+    return result
   } catch (e) {
     return value
   }
