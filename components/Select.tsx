@@ -1,9 +1,10 @@
 import * as React from 'react'
-import Select from 'react-select'
+import Select, { Props } from 'react-select'
+import { CSSObject } from '@emotion/serialize'
 
-const StyledSelect = (props: any) => {
-  const customStyles = {
-    control: (provided: React.CSSProperties, state: any) => ({
+const StyledSelect: React.FC<Props> = (props) => {
+  const customStyles: Props['styles'] = {
+    control: (provided: CSSObject, state: any) => ({
       ...provided,
       borderRadius: 0,
       background: 'rgba(217, 212, 173, 0.01)',
@@ -14,7 +15,12 @@ const StyledSelect = (props: any) => {
         borderColor: 'rgba(217, 212, 173, 1)',
       },
     }),
-    option: (provided: React.CSSProperties, state: any) => ({
+    input: (provided: CSSObject) => ({
+      ...provided,
+      color: 'white',
+      fontSize: '0.85em',
+    }),
+    option: (provided: CSSObject, state: any) => ({
       ...provided,
       background: state.isSelected ? 'rgba(217, 212, 173, 0.5)' : 'none',
       color: 'white',
@@ -23,13 +29,13 @@ const StyledSelect = (props: any) => {
         background: 'rgba(217, 212, 173, 0.2)',
       },
     }),
-    menu: (provided: React.CSSProperties) => ({
+    menu: (provided: CSSObject) => ({
       ...provided,
       zIndex: 10,
       borderRadius: 0,
       background: 'black',
     }),
-    singleValue: (provided: Object) => ({
+    singleValue: (provided: CSSObject) => ({
       ...provided,
       color: 'white',
     }),

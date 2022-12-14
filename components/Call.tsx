@@ -38,7 +38,9 @@ const Call = ({ network, address, abi, fn, inputValues }: Props) => {
       new JsonRpcProvider(RPC_URLS[network], parseInt(network))
     )
 
-    contract.callStatic[fn.name](...processInputValues(fn, inputValues))
+    contract.callStatic[fn.format('sighash')](
+      ...processInputValues(fn, inputValues)
+    )
       .then((result) => {
         if (!canceled) {
           console.log('call result', result)
