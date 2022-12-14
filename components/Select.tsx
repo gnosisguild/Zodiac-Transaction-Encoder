@@ -14,6 +14,11 @@ const StyledSelect = (props: any) => {
         borderColor: 'rgba(217, 212, 173, 1)',
       },
     }),
+    input: (provided: React.CSSProperties) => ({
+      ...provided,
+      color: 'white',
+      fontSize: '0.85em',
+    }),
     option: (provided: React.CSSProperties, state: any) => ({
       ...provided,
       background: state.isSelected ? 'rgba(217, 212, 173, 0.5)' : 'none',
