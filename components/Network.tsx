@@ -18,7 +18,7 @@ const Network = ({ onChange }: Props) => {
       <Select
         defaultValue={options[0]}
         options={options}
-        onChange={(selected: { value: string }) => {
+        onChange={(selected) => {
           onChange((selected?.value as NetworkId) || '1')
         }}
         name="network-select"
