@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Select from './Select'
-import { FunctionFragment, Interface } from '@ethersproject/abi'
+import { Interface } from '@ethersproject/abi'
 
 import StackableContainer from './StackableContainer'
 
@@ -48,11 +48,11 @@ const FunctionSelect = ({ abi, onChange }: Props) => {
     <StackableContainer lessMargin inputContainer>
       <label htmlFor="function-select-input">Select function to encode</label>
       <Select
-        options={options}
+        options={options as any}
         name="function-select"
         inputId="function-select-input"
-        onChange={(selected: { value: string; label: string }) => {
-          onChange((selected as { value: string; label: string }).value)
+        onChange={(selected) => {
+          onChange(selected?.value as string)
         }}
       />
     </StackableContainer>
