@@ -27,9 +27,7 @@ const FunctionOption: React.FC<{ abi: Interface; fn: string }> = ({
       <style jsx>{`
         .option {
           white-space: nowrap;
-          overflow-x: ellipsis;
         }
-        
       }`}</style>
     </div>
   )
