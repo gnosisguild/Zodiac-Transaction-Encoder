@@ -69,7 +69,7 @@ const ABIFunctionRenderer = ({ abi, fn, inputValues }: Props) => {
 
 // ABI might have inputs without name
 export function inputId(fn: FunctionFragment, input: ParamType, i: number) {
-  return `${fn.name}-${input.name ? input.name : i}`
+  return `${fn.format('sighash')}-${input.name ? input.name : i}`
 }
 
 export function isInputValid(input: ParamType, value: string): boolean {
@@ -112,7 +112,7 @@ export function encode(
   const inputValues = processInputValues(fn, inputValueMap)
 
   try {
-    calldata = abi.encodeFunctionData(fn.name, inputValues)
+    calldata = abi.encodeFunctionData(fn.format('sighash'), inputValues)
     encodeError = ''
   } catch (error) {
     // show a console log if theres at least one filled input
