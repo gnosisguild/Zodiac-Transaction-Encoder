@@ -9,16 +9,20 @@ type Props = {
 }
 
 const ABIInput = ({ fetchedAbiText, onChange }: Props) => {
-  const [abiText, setAbiText] = useState('')
+  const [abiText, setAbiText] = useState(fetchedAbiText || '')
+  useEffect(() => {
+    if (fetchedAbiText) {
+      setAbiText(fetchedAbiText)
+    }
+  }, [fetchedAbiText])
   const [syntaxError, setSyntaxError] = useState(false)
 
-  const text = fetchedAbiText || abiText
-  const jsonText = formatAbiText(text, 'json')
-  const humanText = formatAbiText(text, 'human')
+  const jsonText = formatAbiText(abiText, 'json')
+  const humanText = formatAbiText(abiText, 'human')
 
   useEffect(() => {
     try {
-      const abi = parseAbiText(text)
+      const abi = parseAbiText(abiText)
       setSyntaxError(false)
       onChange(abi)
     } catch (error) {
@@ -26,9 +30,9 @@ const ABIInput = ({ fetchedAbiText, onChange }: Props) => {
       setSyntaxError(true)
       onChange(null)
     }
-  }, [text])
+  }, [abiText])
 
-  const disableFormatButtons = syntaxError || !text.trim()
+  const disableFormatButtons = syntaxError || !abiText.trim()
 
   return (
     <>
@@ -39,14 +43,18 @@ const ABIInput = ({ fetchedAbiText, onChange }: Props) => {
           </label>
           <div className="formats">
             <button
-              aria-pressed={!disableFormatButtons && text.trim() === jsonText}
+              aria-pressed={
+                !disableFormatButtons && abiText.trim() === jsonText
+              }
               disabled={disableFormatButtons}
               onClick={() => jsonText && setAbiText(jsonText)}
             >
               json
             </button>
             <button
-              aria-pressed={!disableFormatButtons && text.trim() === humanText}
+              aria-pressed={
+                !disableFormatButtons && abiText.trim() === humanText
+              }
               disabled={disableFormatButtons}
               onClick={() => humanText && setAbiText(humanText)}
             >
@@ -58,7 +66,7 @@ const ABIInput = ({ fetchedAbiText, onChange }: Props) => {
           id="ABI-input"
           className="ABI-input"
           readOnly={!!fetchedAbiText}
-          value={text}
+          value={abiText}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
             setAbiText(e.target.value)
           }}
