@@ -17,7 +17,7 @@ export type NetworkId = keyof typeof BLOCK_EXPLORER_URLS
 
 export const NETWORK_NAMES: Record<NetworkId, string> = {
   '1': 'mainnet',
-  '100': 'xdai',
+  '100': 'gnosis chain',
   '4': 'rinkeby',
   '5': 'görli',
   '10': 'optimism',
