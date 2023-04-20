@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "static": "next build && next export",
+    "static": "next build && next export && touch ./out/.nojekyll",
     "start": "next start",
     "type-check": "tsc",
     "test": "jest --config ./test/jest.config.ts"
